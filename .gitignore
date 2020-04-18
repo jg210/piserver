@@ -1,0 +1,15 @@
+# debuild
+/debian/.debhelper/
+/debian/files
+*.log
+/debian/piserver.substvars
+/debian/piserver/
+/obj-x86_64-linux-gnu/
+
+# circleci
+artifacts
+
+# emacs
+*~
+.#*
+\#*#
