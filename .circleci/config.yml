@@ -1,0 +1,40 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: "cimg/base:2020.01"
+    steps:
+      - checkout
+      - run:
+          name: Running apt-get update
+          command: "sudo apt-get update"
+      - run:
+          # TODO custom docker image not apt-get install.
+          name: Installing dependencies
+          command: |
+            sudo apt-get install -y \
+            build-essential \
+            devscripts \
+            debhelper \
+            cmake \
+            libldap2-dev \
+            libgtkmm-3.0-dev \
+            libarchive-dev \
+            libcurl4-openssl-dev \
+            intltool \
+            git
+      - run:
+          name: Installing non-raspbian dependencies
+          command: |
+            sudo apt-get install -y binfmt-support qemu-user-static
+      - run:
+          name: Building
+          command: debuild -uc -us
+      - run:
+          name: Gathering artifacts
+          command: |
+            mkdir artifacts
+            cp ../*.deb artifacts
+            test -f artifacts/*.deb
+      - store_artifacts:
+          path: artifacts
